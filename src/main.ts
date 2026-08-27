@@ -1,7 +1,7 @@
 import "./style.css";
 import Counter from "./counter";
-import { $ } from "./lib/dom";
-import State, { subscribe } from "./lib/state";
+import { $ } from "../lib/dom";
+import State, { subscribe } from "../lib/state";
 
 const date = new Date(2026, 7, 26, 14, 57, 0);
 const countUp = State({ h: 0, m: 0, s: 0, ms: 0 });

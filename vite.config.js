@@ -6,37 +6,41 @@ import dts from 'vite-plugin-dts';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-export default defineConfig({
-  plugins: [
-    // Generates types only for your library source folder
-    dts({ 
-      include: ['src/**/*.ts'],
-      insertTypesEntry: true,
-      rollupTypes: true
-    })
-  ],
-  build: {
-    outDir: 'docs',
-    emptyOutDir: true,
-    rollupOptions: {
-      // Multiple entry points: One for the web app, others for the library formats
-      input: {
-        // 1. The Web Application (looks for index.html at root)
-        app: resolve(__dirname, 'index.html'),
-        // 2. The Library (ESM format entry)
-        lib: resolve(__dirname, 'src/lib/index.ts'),
-      },
-      output: {
-        // Control how filenames are generated to keep dist/ organized
-        entryFileNames: (chunkInfo) => {
-          if (chunkInfo.name === 'lib') return 'lib/index.js';
-          return 'assets/[name]-[hash].js'; // Standard hashing for web app code
+const appConfig = {
+    build: {
+        outDir: 'docs', // Outputs the web application here
+        emptyOutDir: true,
+        rollupOptions: {
+            input: resolve(__dirname, 'index.html'),
         },
-        chunkFileNames: 'assets/[name]-[hash].js',
-        assetFileNames: 'assets/[name]-[hash].[ext]',
-        // Optional: If you also need a CommonJS build for the library target
-        // you can configure an additional rollup output array block.
-      }
+    },
+}
+
+const libConfig = {
+    plugins: [
+        dts({
+            include: ['lib/**/*.ts'],
+            insertTypesEntry: true,
+            rollupTypes: true,
+        }),
+    ],
+    build: {
+        outDir: 'dist', // Outputs the library binaries here
+        emptyOutDir: true,
+        lib: {
+            entry: resolve(__dirname, 'lib/index.ts'),
+            name: 'n2js-frameword',
+            fileName: (format) => `index.${format}.js`,
+            formats: ['es', 'cjs'],
+        },
+    },
+}
+
+export default defineConfig(({ command }) => {
+    const isLibBuild = process.env.BUILD_TARGET === 'lib';
+    if (command === 'build' && isLibBuild) {
+        return libConfig;
     }
-  }
+
+    return appConfig;
 });

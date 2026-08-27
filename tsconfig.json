@@ -20,5 +20,5 @@
     "erasableSyntaxOnly": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src", "lib-cool/@types"]
+  "include": ["src", "lib/@types", "lib/state.ts", "lib/dom.ts"]
 }
