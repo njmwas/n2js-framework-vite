@@ -1,4 +1,4 @@
-import type { zElement } from "./@types/zdom";
+import type { zElement } from "../lib-cool/@types/zdom";
 import { $ } from "./lib/dom";
 
 export default function Counter(count = 0) {
