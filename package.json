@@ -1,8 +1,19 @@
 {
-  "name": "n2js-vite-framework",
+  "name": "n2js-framework",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
+  "main":"./docs/lib/index.js",
+  "types":"./docs/lib/index.d.ts",
+  "files":[
+    "docs/lib"
+  ],
+  "exports":{
+    ".":{
+      "types":"./docs/lib/index.d.ts",
+      "import":"./docs/lib/index.js"
+    }
+  },
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
