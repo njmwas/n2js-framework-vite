@@ -6,7 +6,9 @@
   "main":"./docs/lib/index.js",
   "types":"./docs/lib/index.d.ts",
   "files":[
-    "docs/lib"
+    "docs/lib",
+    "docs/assets",
+    "docs/@types"
   ],
   "exports":{
     ".":{
