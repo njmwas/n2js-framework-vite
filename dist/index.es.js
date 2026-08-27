@@ -1,0 +1,57 @@
+//#region lib/@types/zdom.ts
+var e = /* @__PURE__ */ "div.span.p.h1.h2.h3.h4.h5.h6.section.main.header.footer.nav.button.input.label.ul.li.a.img.i.form.br.strong.small.canvas.table.thead.tbody.tr.th.td.select.option".split(".");
+//#endregion
+//#region lib/dom.ts
+function t(e) {
+	return new DOMParser().parseFromString(e, "text/html").body.textContent;
+}
+var n = (e) => e.reduce((e, n) => [...e, ...typeof n == "object" && "node" in n ? [n.node] : typeof n == "string" ? [document.createTextNode(t(n))] : typeof n == "number" ? [document.createTextNode(n)] : [n]], []);
+function r(e, t = {}, ...r) {
+	let i = document.createElement(e), a = {};
+	return typeof t == "object" && t && "node" in t ? r = [t, ...r] : a = typeof t == "string" ? t.split(" ").reduce((e, t) => (t.startsWith(".") ? e.class = t.substring(1).replaceAll(".", " ") : t.startsWith("#") ? e.id = t.substring(1) : t.includes(":") && t.split(",").forEach((t) => {
+		let [n, r] = t.split(":");
+		e[n.trim()] = r;
+	}, {}), e), a) : t, Object.entries(a).forEach(([e, t]) => {
+		typeof t == "function" ? i.addEventListener(e, t) : i.setAttribute(e, String(t));
+	}), i.append(...n(r)), new Proxy({
+		node: i,
+		attrs: a,
+		children: r,
+		id: crypto.randomUUID()
+	}, {
+		set(e, t, r) {
+			if (t === "node") {
+				let t = r.node;
+				e.node.replaceWith(t), e.node = t;
+			} else if (t === "children") {
+				let t = n(Array.isArray(r) ? r : [r]);
+				e.node.replaceChildren(...t), e.children = t;
+			} else t === "attrs" ? (Object.entries(r).map(([t, n]) => e.node.setAttribute(n, t)), e.attrs = r) : e[t] = r;
+			return !0;
+		},
+		get(e, t, n) {
+			return t in e, Reflect.get(e, t, n);
+		}
+	});
+}
+var i = e.reduce((e, t) => ({
+	...e,
+	[t]: (...e) => r(t, ...e)
+}), {}), a = /* @__PURE__ */ new Map();
+function o(e, t) {
+	let n = typeof e == "string" ? e.split("|") : [e];
+	return n.forEach((e) => {
+		a.has(e) || a.set(e, /* @__PURE__ */ new Set()), a.set(e, /* @__PURE__ */ new Set([...a.get(e) ?? [], t]));
+	}), () => n.forEach((e) => {
+		a.has(e) && a.delete(e);
+	});
+}
+var s = (e) => new Proxy(e, { set(e, t, n) {
+	return e[t] = n, a.has(t) && a.get(t)?.forEach((e) => e(n)), !0;
+} });
+function c(e) {
+	let t = s({ state_$val: e });
+	return [t.state_$val, (e) => t.state_$val = e];
+}
+//#endregion
+export { i as $, t as DomEntity, s as default, o as subscribe, c as useState };

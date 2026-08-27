@@ -1,25 +1,25 @@
 {
   "name": "n2js-framework",
   "private": true,
-  "version": "1.0.2",
+  "version": "1.0.3",
   "type": "module",
-  "main": "./lib/index.cjs.js",
-  "module": "./lib/index.es.js",
-  "types": "./lib/index.d.ts",
+  "main": "./dist/index.cjs.js",
+  "module": "./dist/index.es.js",
+  "types": "./dist/index.d.ts",
   "files": [
-    "lib"
+    "dist"
   ],
   "exports": {
     ".": {
-      "types": "./lib/index.d.ts",
-      "import": "./lib/index.es.js",
-      "require": "./lib/index.cjs.js"
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.es.js",
+      "require": "./dist/index.cjs.js"
     }
   },
   "scripts": {
     "dev": "vite",
     "build:app": "tsc --noEmit && vite build",
-    "build:lib": "cross-env BUILD_TARGET=lib vite build",
+    "build:lib": "cross-env BUILD_TARGET=dist vite build",
     "preview": "vite preview"
   },
   "devDependencies": {

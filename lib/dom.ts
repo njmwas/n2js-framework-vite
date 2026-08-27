@@ -1,4 +1,4 @@
-import { TAGS, type zElement, type zElementGen } from "../@types/zdom";
+import { TAGS, type zElement, type zElementGen } from "./@types/zdom";
 
 
 export function DomEntity(text: string): string {
