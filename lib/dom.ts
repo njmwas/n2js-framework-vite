@@ -26,12 +26,18 @@ export default function Element(tag: string, generic: string | Object | zElement
         attrs = generic.split(" ").reduce((a: any, b) => {
             if (b.startsWith(".")) a.class = b.substring(1).replaceAll(".", " ");
             else if (b.startsWith("#")) a.id = b.substring(1);
-            else if (b.includes(":")) {
+            else if (new RegExp(/\[(.*)]/g).test(b)) {
+                for (const matchedString in b.matchAll(/\[(.*)\]/g)) {
+                    const [attrName, attrVal] = matchedString[1].split("=");
+                    a[attrName] = attrVal;
+                }
+            }
+            /* else if (b.includes(":")) {
                 b.split(",").forEach(c => {
                     const [k, v] = c.split(":");
                     a[k.trim()] = v;
                 }, {});
-            }
+            } */
             return a;
         }, attrs);
     }
