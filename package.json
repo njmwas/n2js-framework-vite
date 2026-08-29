@@ -19,7 +19,7 @@
   "scripts": {
     "dev": "vite",
     "build:app": "tsc --noEmit && vite build",
-    "build:lib": "cross-env BUILD_TARGET=dist vite build",
+    "build:lib": "cross-env BUILD_TARGET=lib vite build",
     "preview": "vite preview"
   },
   "devDependencies": {

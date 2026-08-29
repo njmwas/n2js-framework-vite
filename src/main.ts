@@ -17,7 +17,7 @@ const appNodes = $.div("#app",
   $.main("",
     $.p("", "Welcome to this JavaScript mini framework"),
     Counter(),
-    $.p("", "In existance for ",
+    $.p(".w-[3px] [style=background-image:url(/images/test.png)]", "In existance for ",
       $.h4("[style=color:red;margin-bottom:0;]", "dd:hh:mm:ss:ms"),
       $.h4({style:"margin-top:0"},
         ...Array.from(Array((display.length * 2) - 1), (_, i) => i % 2 != 0 ? ":" : display[i === 0 ? i : i / 2])

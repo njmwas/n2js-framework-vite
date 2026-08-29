@@ -8,10 +8,15 @@ function t(e) {
 var n = (e) => e.reduce((e, n) => [...e, ...typeof n == "object" && "node" in n ? [n.node] : typeof n == "string" ? [document.createTextNode(t(n))] : typeof n == "number" ? [document.createTextNode(n)] : [n]], []);
 function r(e, t = {}, ...r) {
 	let i = document.createElement(e), a = {};
-	return typeof t == "object" && t && "node" in t ? r = [t, ...r] : a = typeof t == "string" ? t.split(" ").reduce((e, t) => (t.startsWith(".") ? e.class = t.substring(1).replaceAll(".", " ") : t.startsWith("#") ? e.id = t.substring(1) : t.includes(":") && t.split(",").forEach((t) => {
-		let [n, r] = t.split(":");
-		e[n.trim()] = r;
-	}, {}), e), a) : t, Object.entries(a).forEach(([e, t]) => {
+	return typeof t == "object" && t && "node" in t ? r = [t, ...r] : a = typeof t == "string" ? t.split(" ").reduce((e, t) => {
+		if (t.startsWith(".")) e.class = t.substring(1).replaceAll(".", " ");
+		else if (t.startsWith("#")) e.id = t.substring(1);
+		else if ((/* @__PURE__ */ new RegExp(/\[(.*)]/g)).test(t)) for (let n of t.matchAll(/\[(.*)\]/g)) {
+			let [t, r] = n[1].split("=");
+			console.log(t, r), e[t] = r;
+		}
+		return e;
+	}, a) : t, Object.entries(a).forEach(([e, t]) => {
 		typeof t == "function" ? i.addEventListener(e, t) : i.setAttribute(e, String(t));
 	}), i.append(...n(r)), new Proxy({
 		node: i,
