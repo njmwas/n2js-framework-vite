@@ -27,8 +27,9 @@ export default function Element(tag: string, generic: string | Object | zElement
             if (b.startsWith(".")) a.class = b.substring(1).replaceAll(".", " ");
             else if (b.startsWith("#")) a.id = b.substring(1);
             else if (new RegExp(/\[(.*)]/g).test(b)) {
-                for (const matchedString in b.matchAll(/\[(.*)\]/g)) {
+                for (const matchedString of b.matchAll(/\[(.*)\]/g)) {
                     const [attrName, attrVal] = matchedString[1].split("=");
+                    console.log(attrName, attrVal);
                     a[attrName] = attrVal;
                 }
             }
