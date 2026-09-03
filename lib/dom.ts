@@ -1,11 +1,11 @@
-import { TAGS, type zElement, type zElementGen } from "./@types/zdom";
+import { TAGS, type tags, type zElement, type zElementGen } from "./@types/zdom";
 
 
 export function DomEntity(text: string): string {
     return new DOMParser().parseFromString(text, "text/html").body.textContent;
 }
 
-const getNodes = (children: zElement[]): (HTMLElement | Text)[] => children.reduce((a: (HTMLElement | Text)[], c: zElement) => [
+const getNodes = (children: zElement[]): (HTMLElementTagNameMap[tags] | Text)[] => children.reduce((a: (HTMLElementTagNameMap[tags] | Text)[], c: zElement) => [
     ...a,
     ...(typeof c === "object" && "node" in c ? [c.node] :
         typeof c === "string" ? [document.createTextNode(DomEntity(c))] :
@@ -14,7 +14,7 @@ const getNodes = (children: zElement[]): (HTMLElement | Text)[] => children.redu
 ], [])
 
 
-export default function Element(tag: string, generic: string | Object | zElement = {}, ...children: zElement[]): zElement {
+export default function Element(tag: keyof HTMLElementTagNameMap, generic: string | Object | zElement = {}, ...children: zElement[]): zElement {
 
     const node = document.createElement(tag);
     let attrs = {}
@@ -56,7 +56,7 @@ export default function Element(tag: string, generic: string | Object | zElement
     return new Proxy({ node, attrs, children, id: crypto.randomUUID() } as zElement, {
         set(target: zElement, p: string | symbol, newVal: any): boolean {
             if (p === "node") {
-                const newElem: HTMLElement = newVal.node as HTMLElement;
+                const newElem: HTMLElementTagNameMap[tags] = newVal.node;
                 target.node.replaceWith(newElem);
                 target.node = newElem;
             }

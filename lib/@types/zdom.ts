@@ -4,15 +4,15 @@ export const TAGS = [
     'table', 'thead', 'tbody', 'tr', 'th', 'td', 'select', 'option'
 ] as const;
 
-type tags = typeof TAGS[number];
+export type tags = typeof TAGS[number];
 
 export type zElementGen = {
-    [K in tags]: (generic?: string | Object | HTMLElement, ...children: (zElement | string | number | Text)[]) => zElement
+    [K in tags]: (generic?: string | Object | HTMLElementTagNameMap[tags], ...children: (zElement | string | number | Text)[]) => zElement
 }
 
 export type zElement = {
-    node: HTMLElement,
+    node: HTMLElementTagNameMap[tags],
     attrs?: Object,
-    children?: (zElement | HTMLElement | string | number | Text)[],
+    children?: (zElement | HTMLElementTagNameMap[tags] | string | number | Text)[],
     id?: string
 }
