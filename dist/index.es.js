@@ -59,4 +59,4 @@ function c(e) {
 	return [t.state_$val, (e) => t.state_$val = e];
 }
 //#endregion
-export { i as $, t as DomEntity, e as TAGS, s as default, o as subscribe, c as useState };
+export { i as $, t as DomEntity, s as default, o as subscribe, c as useState };
