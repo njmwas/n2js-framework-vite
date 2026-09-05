@@ -1,5 +1,5 @@
 //#region lib/@types/zdom.ts
-var e = /* @__PURE__ */ "div.span.p.h1.h2.h3.h4.h5.h6.section.main.header.footer.nav.button.input.label.ul.li.a.img.i.form.br.strong.small.canvas.table.thead.tbody.tr.th.td.select.option".split(".");
+var e = /* @__PURE__ */ "div.span.p.h1.h2.h3.h4.h5.h6.section.main.header.footer.nav.button.input.label.ul.li.a.img.i.form.br.strong.small.canvas.table.thead.tbody.tr.th.td.select.option.iframe".split(".");
 //#endregion
 //#region lib/dom.ts
 function t(e) {
