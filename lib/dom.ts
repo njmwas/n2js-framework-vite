@@ -14,9 +14,9 @@ const getNodes = (children: zElement[]): (HTMLElementTagNameMap[tags] | Text)[] 
 ], [])
 
 
-export default function Element(tag: keyof HTMLElementTagNameMap, generic: string | Object | zElement = {}, ...children: zElement[]): zElement {
+export default function Element<T extends HTMLElementTagNameMap[tags]>(tag: keyof HTMLElementTagNameMap, generic: string | Object | zElement = {}, ...children: zElement[]): zElement {
 
-    const node = document.createElement(tag);
+    const node = document.createElement(tag) as T;
     let attrs = {}
 
     if (typeof generic === "object" && generic !== null && "node" in generic) {
@@ -29,16 +29,9 @@ export default function Element(tag: keyof HTMLElementTagNameMap, generic: strin
             else if (new RegExp(/\[(.*)]/g).test(b)) {
                 for (const matchedString of b.matchAll(/\[(.*)\]/g)) {
                     const [attrName, attrVal] = matchedString[1].split("=");
-                    console.log(attrName, attrVal);
                     a[attrName] = attrVal;
                 }
             }
-            /* else if (b.includes(":")) {
-                b.split(",").forEach(c => {
-                    const [k, v] = c.split(":");
-                    a[k.trim()] = v;
-                }, {});
-            } */
             return a;
         }, attrs);
     }
@@ -86,4 +79,4 @@ export default function Element(tag: keyof HTMLElementTagNameMap, generic: strin
     // return node;
 }
 
-export const $ = TAGS.reduce((a, tag) => ({ ...a, [tag]: (...params: any[]) => Element(tag, ...params) }), {}) as zElementGen;
+export const $ = TAGS.reduce((a, tag:keyof HTMLElementTagNameMap) => ({ ...a, [tag]: (...params: any[]) => Element(tag, ...params) }), {}) as zElementGen;

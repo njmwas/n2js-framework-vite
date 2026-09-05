@@ -13,7 +13,7 @@ function r(e, t = {}, ...r) {
 		else if (t.startsWith("#")) e.id = t.substring(1);
 		else if ((/* @__PURE__ */ new RegExp(/\[(.*)]/g)).test(t)) for (let n of t.matchAll(/\[(.*)\]/g)) {
 			let [t, r] = n[1].split("=");
-			console.log(t, r), e[t] = r;
+			e[t] = r;
 		}
 		return e;
 	}, a) : t, Object.entries(a).forEach(([e, t]) => {
