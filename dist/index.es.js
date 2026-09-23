@@ -58,12 +58,14 @@ var s = (e) => new Proxy(a({
 	...e,
 	__listeners: /* @__PURE__ */ new Map(),
 	__subscribe(e, t) {
-		this.__listeners ||= /* @__PURE__ */ new Map(), this.__listeners.has(e) || this.__listeners.set(e, /* @__PURE__ */ new Set()), this.__listeners.get(e).add(t);
+		console.log(e), this.__listeners ||= /* @__PURE__ */ new Map(), this.__listeners.has(e) || this.__listeners.set(e, /* @__PURE__ */ new Set()), this.__listeners.get(e).add(t);
 	}
 }), { set(e, t, n) {
 	e[t] = typeof n == "object" ? a(n) : n;
 	let { __listeners: r } = e;
-	return r.has(t) && r.get(t).forEach((e) => e(n)), !0;
+	console.log(r);
+	for (let n of r.keys()) n.split("|").includes(t) && r.get(n).forEach((t) => t(e));
+	return !0;
 } });
 //#endregion
 export { i as $, t as DomEntity, e as TAGS, s as default, o as subscribe };
