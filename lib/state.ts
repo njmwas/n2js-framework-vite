@@ -28,14 +28,21 @@ const State = <T>(state: StateTypeEventType<T>) => {
         set(target: any, key: string, newVal: any) {
             target[key] = typeof newVal == "object" ? setUpInnerState(newVal) : newVal;
             const { __listeners } = target;
-            // console.log(__listeners)
-            for (const listenerKey of __listeners.keys()) {
-                const lKeys = listenerKey.split("|");
-                if (lKeys.includes(key)) {
-                    __listeners.get(listenerKey)
-                        .forEach((sub: (nt: typeof newVal) => void) => sub(target));
+
+            if (__listeners.has("*")) {
+                __listeners.get("*")
+                    .forEach((sub: (nt: typeof newVal) => void) => sub(target));
+            }
+            else {
+                for (const listenerKey of __listeners.keys()) {
+                    const lKeys = listenerKey.split("|");
+                    if (lKeys.includes(key)) {
+                        __listeners.get(listenerKey)
+                            .forEach((sub: (nt: typeof newVal) => void) => sub(target));
+                    }
                 }
             }
+            
             return true;
         }
     });

@@ -63,7 +63,8 @@ var s = (e) => new Proxy(a({
 }), { set(e, t, n) {
 	e[t] = typeof n == "object" ? a(n) : n;
 	let { __listeners: r } = e;
-	for (let n of r.keys()) n.split("|").includes(t) && r.get(n).forEach((t) => t(e));
+	if (r.has("*")) r.get("*").forEach((t) => t(e));
+	else for (let n of r.keys()) n.split("|").includes(t) && r.get(n).forEach((t) => t(e));
 	return !0;
 } });
 //#endregion
