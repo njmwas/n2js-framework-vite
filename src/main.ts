@@ -22,6 +22,8 @@ console.log(
   appState.address
 )
 
+// appState.;
+
 appState.__subscribe("counter", (newCount:number)=>console.log("NewCount", newCount));
 appState.address.__subscribe("counter", (newCount:number)=>console.log("addressCounter", newCount));
 appState.address.address.__subscribe("counter", (newCount:number)=>console.log("innerAddressCounter", newCount));
@@ -43,7 +45,7 @@ subscribe("address.address.counter", (innerAddressCounter)=>{
 setInterval(()=>{
   // console.log(appState)
   // appState.counter += 1;
-  // appState.address.counter += 1;
+  appState.address.counter += 1;
   // appState.address.address.counter += 1;
 }, 1000);
 

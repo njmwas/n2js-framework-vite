@@ -1,5 +1,5 @@
 
-type StateType<T> = T & {
+type StateTypeEventType = {
     __listener?: Map<string, Set<(newVal: any) => void>>,
     __subscribe?: (key: string, callback: ((newVal: any) => void)) => void
 }
@@ -14,7 +14,7 @@ export function subscribe(key: string, callback: () => void) {
     console.log("This is deprecated", key, callback)
 }
 
-const State = <T>(state: StateType<T>) => {
+const State = <T>(state: T & StateTypeEventType) => {
     return new Proxy(setUpInnerState({
         ...state,
         __listeners: new Map(),
@@ -23,7 +23,7 @@ const State = <T>(state: StateType<T>) => {
             this.__listeners.get(key).add(callback);
         }
     }), {
-        set(target: StateType<any>, key: string, newVal: any) {
+        set(target: any, key: string, newVal: any) {
             target[key] = typeof newVal == "object" ? setUpInnerState(newVal) : newVal;
             const { __listeners } = target;
             if (__listeners.has(key)) {
@@ -34,9 +34,9 @@ const State = <T>(state: StateType<T>) => {
     });
 }
 
-export function useState<T>(defaultState: T): [T, (newVal: T) => void] {
+/* export function useState<T>(defaultState: T): [T, (newVal: T) => void] {
     const state = State({ state_$val: defaultState });
     return [state.state_$val, (newState: T) => state.state_$val = newState];
-}
+} */
 
 export default State;

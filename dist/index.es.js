@@ -65,9 +65,5 @@ var s = (e) => new Proxy(a({
 	let { __listeners: r } = e;
 	return r.has(t) && r.get(t).forEach((e) => e(n)), !0;
 } });
-function c(e) {
-	let t = s({ state_$val: e });
-	return [t.state_$val, (e) => t.state_$val = e];
-}
 //#endregion
-export { i as $, t as DomEntity, e as TAGS, s as default, o as subscribe, c as useState };
+export { i as $, t as DomEntity, e as TAGS, s as default, o as subscribe };
