@@ -19,7 +19,7 @@ const State = <T>(state: StateTypeEventType<T>) => {
         ...state,
         __listeners: new Map(),
         __subscribe(key: string, callback: (newVal: T) => void) {
-            console.log(key)
+            // console.log(key)
             if (!this.__listeners) this.__listeners = new Map();
             if (!this.__listeners.has(key)) this.__listeners.set(key, new Set());
             this.__listeners.get(key).add(callback);
@@ -28,7 +28,7 @@ const State = <T>(state: StateTypeEventType<T>) => {
         set(target: any, key: string, newVal: any) {
             target[key] = typeof newVal == "object" ? setUpInnerState(newVal) : newVal;
             const { __listeners } = target;
-            console.log(__listeners)
+            // console.log(__listeners)
             for (const listenerKey of __listeners.keys()) {
                 const lKeys = listenerKey.split("|");
                 if (lKeys.includes(key)) {
