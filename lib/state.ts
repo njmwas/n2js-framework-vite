@@ -4,7 +4,7 @@ export type StateTypeEventType = {
     __subscribe?: (key: string, callback: ((newVal: any) => void)) => void
 }
 
-function setUpInnerState<T>(obj: T & {}): T {
+function setUpInnerState<T>(obj: T & StateTypeEventType): T {
     return Object.entries(obj).reduce((a: Record<string, any>, [key, val]: [string | number, any]) => {
         return { ...a, [key]: typeof val === "object" && key !== "__listeners" ? State(setUpInnerState(val)) : val };
     }, {}) as T;
