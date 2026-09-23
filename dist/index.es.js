@@ -42,17 +42,28 @@ function r(e, t = {}, ...r) {
 var i = e.reduce((e, t) => ({
 	...e,
 	[t]: (...e) => r(t, ...e)
-}), {}), a = /* @__PURE__ */ new Map();
-function o(e, t) {
-	let n = typeof e == "string" ? e.split("|") : [e];
-	return n.forEach((e) => {
-		a.has(e) || a.set(e, /* @__PURE__ */ new Set()), a.set(e, /* @__PURE__ */ new Set([...a.get(e) ?? [], t]));
-	}), () => n.forEach((e) => {
-		a.has(e) && a.delete(e);
-	});
+}), {});
+//#endregion
+//#region lib/state.ts
+function a(e) {
+	return Object.entries(e).reduce((e, [t, n]) => ({
+		...e,
+		[t]: typeof n == "object" && t !== "__listeners" ? s(a(n)) : n
+	}), {});
 }
-var s = (e) => new Proxy(e, { set(e, t, n) {
-	return e[t] = n, a.has(t) && a.get(t)?.forEach((e) => e(n)), !0;
+function o(e, t) {
+	console.log("This is deprecated", e, t);
+}
+var s = (e) => new Proxy(a({
+	...e,
+	__listeners: /* @__PURE__ */ new Map(),
+	__subscribe(e, t) {
+		this.__listeners.has(e) || this.__listeners.set(e, /* @__PURE__ */ new Set()), this.__listeners.get(e).add(t);
+	}
+}), { set(e, t, n) {
+	e[t] = typeof n == "object" ? a(n) : n;
+	let { __listeners: r } = e;
+	return r.has(t) && r.get(t).forEach((e) => e(n)), !0;
 } });
 function c(e) {
 	let t = s({ state_$val: e });

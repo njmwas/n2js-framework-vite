@@ -1,33 +1,36 @@
-const subscriptions: Map<string, Set<(newVal: any) => any>> = new Map();
 
-export function subscribe(listener: string, callback: (newVal: any) => any) {
-    const keys = typeof listener === "string" ? listener.split("|") : [listener as string];
+function setUpInnerState<T>(obj: T & {}): T {
+    return Object.entries(obj).reduce((a: Record<string, any>, [key, val]: [string | number, any]) => {
+        return { ...a, [key]: typeof val === "object" && key !== "__listeners" ? State(setUpInnerState(val)) : val };
+    }, {}) as T;
+}
 
-    keys.forEach((key) => {
-        if (!subscriptions.has(key)) subscriptions.set(key, new Set());
-        subscriptions.set(key, new Set([...subscriptions.get(key) ?? [], callback]));
-    });
+export function subscribe(key: string, callback: () => void) {
+    console.log("This is deprecated", key, callback)
+}
 
-    // callback();
-    return () => keys.forEach((key) => {
-        if (subscriptions.has(key)) subscriptions.delete(key);
+const State = <T>(state: T & {}) => {
+    return new Proxy(setUpInnerState({
+        ...state,
+        __listeners: new Map(),
+        __subscribe(key: string, callback: ((newVal: T) => void)) {
+            if (!this.__listeners.has(key)) this.__listeners.set(key, new Set());
+            this.__listeners.get(key).add(callback);
+        }
+    }), {
+        set(target: any, key: string, newVal: any) {
+            target[key] = typeof newVal == "object" ? setUpInnerState(newVal) : newVal;
+            const { __listeners } = target;
+            if (__listeners.has(key)) {
+                __listeners.get(key).forEach((sub: (nt: typeof newVal) => void) => sub(newVal));
+            }
+            return true;
+        }
     });
 }
 
-const State = <T>(state: T) => new Proxy(state, {
-    set(target: any, key: string, newVal: any) {
-        target[key] = newVal;
-        if (subscriptions.has(key)) {
-            const listeners = subscriptions.get(key);
-            listeners?.forEach((sub) => sub(newVal));
-        }
-        return true;
-    }
-});
-
 export function useState<T>(defaultState: T): [T, (newVal: T) => void] {
     const state = State({ state_$val: defaultState });
-    // subscribe("state_$val", (newVal:T)=>)
     return [state.state_$val, (newState: T) => state.state_$val = newState];
 }
 
