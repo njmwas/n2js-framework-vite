@@ -1,4 +1,4 @@
-type StateTypeEventType = {
+export type StateTypeEventType = {
     __listener?: Map<string, Set<(newVal: any) => void>>;
     __subscribe?: (key: string, callback: ((newVal: any) => void)) => void;
 };
