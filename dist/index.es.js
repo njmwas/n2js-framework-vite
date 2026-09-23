@@ -58,7 +58,7 @@ var s = (e) => new Proxy(a({
 	...e,
 	__listeners: /* @__PURE__ */ new Map(),
 	__subscribe(e, t) {
-		this.__listeners.has(e) || this.__listeners.set(e, /* @__PURE__ */ new Set()), this.__listeners.get(e).add(t);
+		this.__listeners ||= /* @__PURE__ */ new Map(), this.__listeners.has(e) || this.__listeners.set(e, /* @__PURE__ */ new Set()), this.__listeners.get(e).add(t);
 	}
 }), { set(e, t, n) {
 	e[t] = typeof n == "object" ? a(n) : n;

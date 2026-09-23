@@ -1,10 +1,10 @@
 
-export type StateTypeEventType = {
-    __listener?: Map<string, Set<(newVal: any) => void>>,
+export type StateTypeEventType<T> = T & {
+    __listeners?: Map<string, Set<(newVal: any) => void>>,
     __subscribe?: (key: string, callback: ((newVal: any) => void)) => void
 }
 
-function setUpInnerState<T>(obj: T & StateTypeEventType): T {
+function setUpInnerState<T>(obj: StateTypeEventType<T>): T {
     return Object.entries(obj).reduce((a: Record<string, any>, [key, val]: [string | number, any]) => {
         return { ...a, [key]: typeof val === "object" && key !== "__listeners" ? State(setUpInnerState(val)) : val };
     }, {}) as T;
@@ -14,14 +14,15 @@ export function subscribe(key: string, callback: () => void) {
     console.log("This is deprecated", key, callback)
 }
 
-const State = <T>(state: T & StateTypeEventType) => {
+const State = <T>(state: StateTypeEventType<T>) => {
     return new Proxy(setUpInnerState({
         ...state,
         __listeners: new Map(),
-        __subscribe(key: string, callback: ((newVal: T) => void)) {
+        __subscribe(key: string, callback: (newVal: T) => void) {
+            if (!this.__listeners) this.__listeners = new Map();
             if (!this.__listeners.has(key)) this.__listeners.set(key, new Set());
             this.__listeners.get(key).add(callback);
-        }
+        },
     }), {
         set(target: any, key: string, newVal: any) {
             target[key] = typeof newVal == "object" ? setUpInnerState(newVal) : newVal;

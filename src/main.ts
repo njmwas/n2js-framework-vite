@@ -1,17 +1,30 @@
-import State from "../lib/state";
+import State, { type StateTypeEventType } from "../lib/state";
 
 console.log("Nice")
 
-const appState = State({
-  name:"Json",
-  counter:0,
-  address:{
-    city:"Nairobi",
-    country:"Kenya",
+const appState: StateTypeEventType<{
+  name: string,
+  counter: number,
+  address: StateTypeEventType<{
+    city: string,
+    country: string,
+    counter: number,
+    address: StateTypeEventType<{
+      home: string,
+      code: number,
+      counter: number
+    }>
+  }>
+}> = State({
+  name: "Json",
+  counter: 0,
+  address: {
+    city: "Nairobi",
+    country: "Kenya",
     counter: 0,
-    address:{
-      home:"lksdf",
-      code:23432,
+    address: {
+      home: "lksdf",
+      code: 23432,
       counter: 0
     }
   }
@@ -24,9 +37,9 @@ console.log(
 
 // appState.;
 
-appState.__subscribe("counter", (newCount:number)=>console.log("NewCount", newCount));
-appState.address.__subscribe("counter", (newCount:number)=>console.log("addressCounter", newCount));
-appState.address.address.__subscribe("counter", (newCount:number)=>console.log("innerAddressCounter", newCount));
+appState.__subscribe!("counter", (newCount: number) => console.log("NewCount", newCount));
+appState.address.__subscribe!("counter", (newCount: number) => console.log("addressCounter", newCount));
+appState.address.address.__subscribe!("counter", (newCount: number) => console.log("innerAddressCounter", newCount));
 
 /* subscribe("counter", (counter)=>{
   console.log("Account:", counter)
@@ -42,10 +55,10 @@ subscribe("address.address.counter", (innerAddressCounter)=>{
 
 // console.log(appState.address instanceof ProxyConstructor)
 
-setInterval(()=>{
+setInterval(() => {
   // console.log(appState)
-  // appState.counter += 1;
-  appState.address.counter += 1;
+  // appState.counter += 1
+  // appState.address.counter += 1;
   // appState.address.address.counter += 1;
 }, 1000);
 
