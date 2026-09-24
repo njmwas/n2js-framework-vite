@@ -37,7 +37,7 @@ console.log(
 
 // appState.;
 
-appState.__subscribe!("counter", (newCount: number) => console.log("NewCount", newCount));
+appState.address.__subscribe!("*", (newCount: number) => console.log("NewCount", newCount));
 // appState.address.__subscribe!("counter", (newCount: number) => console.log("addressCounter", newCount));
 appState.address.address.__subscribe!("counter|code", (newCount: number) => console.log("innerAddressCounter", newCount));
 
