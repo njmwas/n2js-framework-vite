@@ -1,5 +1,5 @@
 //#region lib/@types/zdom.ts
-var e = /* @__PURE__ */ "div.span.p.h1.h2.h3.h4.h5.h6.section.main.header.footer.nav.button.input.label.ul.li.a.img.i.form.br.strong.small.canvas.table.thead.tbody.tr.th.td.select.option.iframe".split(".");
+var e = /* @__PURE__ */ "div.span.p.h1.h2.h3.h4.h5.h6.section.main.header.footer.nav.button.input.label.ul.li.a.img.i.form.br.strong.small.canvas.table.thead.tbody.tr.th.td.select.option.iframe.dialog".split(".");
 //#endregion
 //#region lib/dom.ts
 function t(e) {
@@ -64,7 +64,13 @@ var s = (e) => new Proxy(a({
 	e[t] = typeof n == "object" ? a(n) : n;
 	let { __listeners: r } = e;
 	if (r.has("*")) r.get("*").forEach((t) => t(e));
-	else for (let n of r.keys()) n.split("|").includes(t) && r.get(n).forEach((t) => t(e));
+	else {
+		console.log(r.keys());
+		for (let n of r.keys()) {
+			let i = n.split("|");
+			console.log(i), i.includes(t) && r.get(n).forEach((t) => t(e));
+		}
+	}
 	return !0;
 } });
 //#endregion

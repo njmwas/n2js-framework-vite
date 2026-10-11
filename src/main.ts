@@ -58,7 +58,7 @@ subscribe("address.address.counter", (innerAddressCounter)=>{
 setInterval(() => {
   // console.log(appState)
   // appState.counter += 1
-  // appState.address.counter += 1;
+  appState.address.counter += 1;
   // appState.address.address.counter += 1;
   // appState.address.address.code += 1;
 }, 1000);

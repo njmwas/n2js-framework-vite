@@ -34,8 +34,10 @@ const State = <T>(state: StateTypeEventType<T>) => {
                     .forEach((sub: (nt: typeof newVal) => void) => sub(target));
             }
             else {
+                console.log(__listeners.keys())
                 for (const listenerKey of __listeners.keys()) {
                     const lKeys = listenerKey.split("|");
+                    console.log(lKeys)
                     if (lKeys.includes(key)) {
                         __listeners.get(listenerKey)
                             .forEach((sub: (nt: typeof newVal) => void) => sub(target));
